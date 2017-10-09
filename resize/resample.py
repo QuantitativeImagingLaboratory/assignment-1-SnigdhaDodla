@@ -1,5 +1,7 @@
 import numpy as np
 import cv2
+import math
+from resize import interpolation as inter
 class resample:
 
     def resize(self, image, fx = None, fy = None, interpolation = None):
@@ -52,6 +54,48 @@ class resample:
         """
 
         # Write your code for bilinear interpolation here
+        (orgImgRow, orgImgColumn) = image.shape
+        reImgRowF = (float(orgImgRow) * float(fx))
+        reImgColF = (float(orgImgColumn) * float(fy))
+        reImgRow = int(reImgRowF)
+        reImgCol = int(reImgColF)
+        print(orgImgRow, orgImgColumn, reImgCol, reImgRow)
+        resizedImage = np.zeros((reImgRow, reImgCol), np.uint8)
 
-        return image
+        interpol = inter.interpolation()
+
+        print("resized rows = ")
+        print(reImgRow)
+        print("resized cols = ")
+        print(reImgCol)
+
+        for i in range(0, reImgRow - 1):
+            pointX1 = math.floor(i / float(fx))
+            pointX2 = math.ceil(i / float(fx))
+            if pointX2 == 512:
+                pointX2 = 511
+            for j in range(0, reImgCol - 1):
+                pointY1 = math.floor(j / float(fy))
+
+                pointY2 = math.ceil(j / float(fy))
+                if pointY2 == 512:
+                    pointY2 = 511
+                # if i==0:
+                #    print(pointY1,j,pointY2)
+
+                # print(pointX1, pointY1, pointX2, pointY2)
+
+                pt1 = (pointX1, pointY1, image[pointX1, pointY1])
+                pt2 = (pointX2, pointY1, image[pointX2, pointY1])
+                pt3 = (pointX1, pointY2, image[pointX1, pointY2])
+                pt4 = (pointX2, pointY2, image[pointX2, pointY2])
+
+                if isinstance(i / float(fx), float) and isinstance(j / float(fx), float):
+                    unknown = (i / float(fx), j / float(fy))
+
+                    resizedImage[i, j] = interpol.bilinear_interpolation(pt1, pt2, pt3, pt4, unknown)
+                    # bilinear_interpolation(self, pt1, pt2, pt3, pt4, unknown)
+                    print(resizedImage[i, j])
+
+        return resizedImage
 
