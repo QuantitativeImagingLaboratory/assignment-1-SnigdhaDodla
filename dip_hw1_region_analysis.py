@@ -57,9 +57,21 @@ def main():
     #Saving histogram to output directory    
     hist_fig = plt.plot(hist)
     plt.savefig(outputDir+"hist.png")
+    intensity1 = list()
+    #frequency = list(range(0, 256))
+    for i in range(0, 256):
+        if (hist[i] != 0):
+            intensity1.append(i)
+
+    k = intensity1[0]
+    j = intensity1[-1]
+    min_intensity = min(intensity1)
+    max_intensity = max(intensity1)
+    rand_val = min_intensity + (max_intensity - min_intensity) * uniform(0, 1)
+    print(rand_val)
 
     #threshold = bin_img.find_optimal_threshold(hist)
-    threshold = bin_img.find_optimal_threshold(bin_img.rand_val)
+    threshold = bin_img.find_optimal_threshold(rand_val,hist)
     print("Optimal threshold: ", threshold)
 
     binary_img = bin_img.binarize(input_image,threshold)

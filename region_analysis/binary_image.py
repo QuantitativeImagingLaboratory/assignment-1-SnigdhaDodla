@@ -24,24 +24,23 @@ class binary_image:
 
         return hist
 
-    intensity = list(range(0, 256))
-    frequency = list(range(0, 256))
-    k = intensity[0]
-    j = intensity[-1]
-    min_intensity = min(intensity)
-    max_intensity = max(intensity)
-    rand_val = min_intensity + (max_intensity - min_intensity) * uniform(0, 1)
-    print(rand_val)
-
-    def find_optimal_threshold(self,thresh):
+    def find_optimal_threshold(self,thresh,hist):
         """analyses a histogram it to find the optimal threshold value assuming a bimodal histogram
         takes as input
         hist: a bimodal histogram
         returns: an optimal threshold value"""
-        intensity = list(range(0, 256))
-        frequency = list(range(0, 256))
+        count =0;
+        intensity = list()
+
+        for i in range(0, 256):
+            if (hist[i] != 0):
+                intensity.append(i)
+
+
+
         k = intensity[0]
         j = intensity[-1]
+
         min_intensity = min(intensity)
         max_intensity = max(intensity)
 
@@ -51,12 +50,12 @@ class binary_image:
         count_end = 0
         t = 0
         thresh_data = round(thresh)
-        for x in range(k, thresh_data):
+        for x in range(0, thresh_data):
             sum_t = sum_t + intensity[x]
             count_t = count_t + 1
 
         mean_thresh = sum_t / count_t
-        for y in range(thresh_data, j):
+        for y in range(thresh_data, len(intensity)):
             sum_end = sum_end + intensity[y]
             count_end = count_end + 1
 
@@ -70,8 +69,8 @@ class binary_image:
                 break
             else:
                 t = 0
-                c = self.find_optimal_threshold(avg)
-                print("c value is", c)
+                c = self.find_optimal_threshold(avg,hist)
+
                 thresh_data = c
                 break
 
