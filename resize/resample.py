@@ -54,27 +54,27 @@ class resample:
         """
 
         # Write your code for bilinear interpolation here
-        (orgImgRow, orgImgColumn) = image.shape
-        reImgRowF = (float(orgImgRow) * float(fx))
-        reImgColF = (float(orgImgColumn) * float(fy))
-        reImgRow = int(reImgRowF)
-        reImgCol = int(reImgColF)
-        print(orgImgRow, orgImgColumn, reImgCol, reImgRow)
-        resizedImage = np.zeros((reImgRow, reImgCol), np.uint8)
+        (ini_row, ini_col) = image.shape
+        end_rfre = (float(ini_row) * float(fx))
+        end_cfre = (float(ini_col) * float(fy))
+        end_r = int(end_rfre)
+        end_c = int(end_cfre)
+        print(ini_row, ini_col, end_c, end_r)
+        image1 = np.zeros((end_r, end_c), np.uint8)
 
         interpol = inter.interpolation()
 
         print("resized rows = ")
-        print(reImgRow)
+        print(end_r)
         print("resized cols = ")
-        print(reImgCol)
+        print(end_c)
 
-        for i in range(0, reImgRow - 1):
+        for i in range(0, end_r - 1):
             pointX1 = math.floor(i / float(fx))
             pointX2 = math.ceil(i / float(fx))
             if pointX2 == 512:
                 pointX2 = 511
-            for j in range(0, reImgCol - 1):
+            for j in range(0, end_c - 1):
                 pointY1 = math.floor(j / float(fy))
 
                 pointY2 = math.ceil(j / float(fy))
@@ -93,9 +93,9 @@ class resample:
                 if isinstance(i / float(fx), float) and isinstance(j / float(fx), float):
                     unknown = (i / float(fx), j / float(fy))
 
-                    resizedImage[i, j] = interpol.bilinear_interpolation(pt1, pt2, pt3, pt4, unknown)
+                    image1[i, j] = interpol.bilinear_interpolation(pt1, pt2, pt3, pt4, unknown)
                     # bilinear_interpolation(self, pt1, pt2, pt3, pt4, unknown)
-                    print(resizedImage[i, j])
+                    print(image1[i, j])
 
-        return resizedImage
+        return image1
 

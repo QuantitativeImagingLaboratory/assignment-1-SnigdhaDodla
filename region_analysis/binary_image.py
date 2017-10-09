@@ -91,7 +91,7 @@ class binary_image:
         returns: a binary image"""
         [k, l] = image.shape
         I_binary = image
-        print(image)
+        #print(image)
         print("assigned", I_binary)
         for i in range(0, k):
             for j in range(0, l):
@@ -102,6 +102,7 @@ class binary_image:
 
         print("evauated", I_binary)
         I_binary = image.copy()
+        print(I_binary)
         return I_binary
         bin_img = image.copy()
 
